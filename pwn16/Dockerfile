@@ -2,8 +2,10 @@ FROM ubuntu:16.04
 MAINTAINER ARO7I <ARO7I@icloud.com>
 
 ENV DEBIAN_FRONTEND noninteractive
+RUN dpkg --add-architecture i386
 RUN apt-get update
 RUN apt-get install vim git curl -y
+RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
 
 # Install shell
 RUN apt-get install zsh -y
@@ -13,6 +15,11 @@ RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.s
 ADD zshrc /home/pwn/.zshrc
 ADD vimrc /home/pwn/.vimrc
 USER root
+RUN echo "1234\n1234\n" | passwd pwn
+
+# Install ssh
+RUN apt-get install openssh-server -y
+RUN service ssh start
 
 # Install gdb
 RUN apt-get install gdb -y
