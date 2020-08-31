@@ -19,7 +19,10 @@ RUN echo "1234\n1234\n" | passwd pwn
 
 # Install ssh
 RUN apt-get install openssh-server -y
-RUN service ssh start
+RUN sed -ri 's/Port 22/Port 4418/g' /etc/ssh/sshd_config
+
+# Install nc
+RUN apt-get install netcat-traditional
 
 # Install gdb
 RUN apt-get install gdb -y
@@ -43,4 +46,6 @@ RUN echo 'alias ROPgadget="python3 $HOME/.ROPgadget/ROPgadget.py"' >> /home/pwn/
 RUN apt-get install ruby -y
 RUN gem install one_gadget
 
-USER pwn
+#USER pwn
+ADD start.sh /start.sh
+RUN chmod +x /start.sh
