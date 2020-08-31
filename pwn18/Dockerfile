@@ -19,7 +19,7 @@ RUN echo "1234\n1234\n" | passwd pwn
 
 # Install ssh
 RUN apt-get install openssh-server -y
-RUN sed -ri 's/Port 22/Port 4418/g' /etc/ssh/sshd_config
+RUN sed -ri 's/#Port 22/Port 4418/g' /etc/ssh/sshd_config
 
 # Install nc
 RUN apt-get install netcat-traditional
