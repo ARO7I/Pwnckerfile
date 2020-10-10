@@ -19,6 +19,7 @@ RUN echo "${USER_PASS}\n${USER_PASS}\n" | passwd root
 RUN echo "${USER_PASS}\n${USER_PASS}\n" | passwd ${USER_NAME}
 WORKDIR /home/${USER_NAME}
 USER ${USER_NAME}
+ENV LC_ALL=C.UTF-8
 RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 ADD zshrc .zshrc
 ADD vimrc .vimrc
