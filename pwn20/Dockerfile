@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 MAINTAINER ARO7I <ARO7I@icloud.com>
 
 ENV TZ Asia/Seoul
+ENV LC_ALL=C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 ENV USER_NAME pwn
 ENV USER_PASS 1234
@@ -16,6 +17,7 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 # Install shell
 RUN apt-get install zsh -y
 RUN useradd -m -s `which zsh` -g users ${USER_NAME}
+RUN echo "${USER_PASS}\n${USER_PASS}\n" | passwd root
 RUN echo "${USER_PASS}\n${USER_PASS}\n" | passwd ${USER_NAME}
 WORKDIR /home/${USER_NAME}
 USER ${USER_NAME}
