@@ -22,28 +22,31 @@ RUN apt-get install openssh-server -y
 RUN sed -ri "s/#Port 22/Port 4420/g" /etc/ssh/sshd_config
 
 USER pwn
-
-ADD zshrc ~/.zshrc
-ADD vimrc ~/.vimrc
-
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN git clone https://github.com/djui/alias-tips.git ~/.oh-my-zsh/custom/plugins/alias-tips
+RUN git clone https://github.com/djui/alias-tips.git /home/pwn/.oh-my-zsh/custom/plugins/alias-tips
 
+USER root
+ADD zshrc /home/pwn/.zshrc
+ADD vimrc /home/pwn/.vimrc
+RUN chmod 666 /home/pwn/.zshrc
+RUN chmod 666 /home/pwn/.vimrc
+
+USER pwn
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade pwntools
-RUN git clone https://github.com/longld/peda.git ~/.peda
-RUN sed -ri 's/n", "a/ff", "a/g' ~/.peda/lib/config.py
-RUN git clone https://github.com/scwuaptx/Pwngdb.git ~/.Pwngdb
-RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o ~/.gdbinit
+RUN git clone https://github.com/longld/peda.git /home/pwn/.peda
+RUN sed -ri 's/n", "a/ff", "a/g' /home/pwn/.peda/lib/config.py
+RUN git clone https://github.com/scwuaptx/Pwngdb.git /home/pwn/.Pwngdb
+RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o /home/pwn/.gdbinit
 
 RUN python3 -m pip install --upgrade capstone
-RUN git clone https://github.com/JonathanSalwan/ROPgadget.git ~/.ROPgadget
+RUN git clone https://github.com/JonathanSalwan/ROPgadget.git /home/pwn/.ROPgadget
 
-RUN git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
-RUN mkdir ~/.linuxbrew/bin
-RUN ln -s ~/.linuxbrew/Homebrew/bin/brew ~/.linuxbrew/bin
-RUN echo '\neval $(~/.linuxbrew/bin/brew shellenv)' >> ~/.zshrc
-RUN eval $(~/.linuxbrew/bin/brew shellenv) \
+RUN git clone https://github.com/Homebrew/brew /home/pwn/.linuxbrew/Homebrew
+RUN mkdir /home/pwn/.linuxbrew/bin
+RUN ln -s /home/pwn/.linuxbrew/Homebrew/bin/brew /home/pwn/.linuxbrew/bin
+RUN echo '\neval $(/home/pwn/.linuxbrew/bin/brew shellenv)' >> /home/pwn/.zshrc
+RUN eval $(/home/pwn/.linuxbrew/bin/brew shellenv) \
         && brew install nvim autojump zsh-autosuggestions zsh-syntax-highlighting
 RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
