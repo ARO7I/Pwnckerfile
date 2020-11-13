@@ -1,0 +1,8 @@
+Sudo setting
+1. switch root
+2. sudoedit /etc/sudoers
+3. :20
+4. yyp
+5. xxxxipwn
+6. \e
+7. :wq

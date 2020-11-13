@@ -27,9 +27,14 @@ RUN git clone https://github.com/djui/alias-tips.git /home/pwn/.oh-my-zsh/custom
 
 USER root
 ADD zshrc /home/pwn/.zshrc
-ADD vimrc /home/pwn/.vimrc
 RUN chmod 666 /home/pwn/.zshrc
-RUN chmod 666 /home/pwn/.vimrc
+
+RUN mkdir /home/pwn/.config
+RUN mkdir /home/pwn/.config/nvim
+ADD vimrc /home/pwn/.config/nvim/init.vim
+RUN chmod 666 /home/pwn/.config
+RUN chmod 666 /home/pwn/.config/nvim
+RUN chmod 666 /home/pwn/.config/nvim/init.vim
 
 USER pwn
 RUN python3 -m pip install --upgrade pip
@@ -54,5 +59,7 @@ RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/p
 USER root
 RUN echo "1234\n1234\n" | passwd root
 RUN echo "1234\n1234\n" | passwd pwn
+ADD README /home/pwn/README
+RUN chmod 666 /home/pwn/README
 ADD start.sh /start.sh
 RUN chmod 750 /start.sh
