@@ -8,7 +8,9 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 
 RUN sed -i "s/http:\/\/archive.ubuntu.com/http:\/\/mirror.kakao.com/g" /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install curl git wget gdb python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential file zsh sudo ruby netcat-traditional -y
+RUN apt-get install curl git wget file zsh sudo vim -y
+RUN apt-get install libssl-dev libffi-dev build-essential -y
+RUN apt-get install gdb python3 python3-pip python3-dev ruby netcat-traditional -y
 RUN gem install one_gadget
 
 RUN useradd -ms /bin/zsh pwn
@@ -26,15 +28,10 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 RUN git clone https://github.com/djui/alias-tips.git /home/pwn/.oh-my-zsh/custom/plugins/alias-tips
 
 USER root
-ADD zshrc /home/pwn/.zshrc
+COPY zshrc /home/pwn/.zshrc
 RUN chmod 666 /home/pwn/.zshrc
-
-RUN mkdir /home/pwn/.config
-RUN mkdir /home/pwn/.config/nvim
-ADD vimrc /home/pwn/.config/nvim/init.vim
-RUN chmod 666 /home/pwn/.config
-RUN chmod 666 /home/pwn/.config/nvim
-RUN chmod 666 /home/pwn/.config/nvim/init.vim
+COPY vimrc /home/pwn/.vimrc
+RUN chmod 666 /home/pwn/.vimrc
 
 USER pwn
 RUN python3 -m pip install --upgrade pip
@@ -46,20 +43,13 @@ RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549
 
 RUN python3 -m pip install --upgrade capstone
 RUN git clone https://github.com/JonathanSalwan/ROPgadget.git /home/pwn/.ROPgadget
-
-RUN git clone https://github.com/Homebrew/brew /home/pwn/.linuxbrew/Homebrew
-RUN mkdir /home/pwn/.linuxbrew/bin
-RUN ln -s /home/pwn/.linuxbrew/Homebrew/bin/brew /home/pwn/.linuxbrew/bin
-RUN echo '\neval $(/home/pwn/.linuxbrew/bin/brew shellenv)' >> /home/pwn/.zshrc
-RUN eval $(/home/pwn/.linuxbrew/bin/brew shellenv) \
-        && brew install nvim autojump zsh-autosuggestions zsh-syntax-highlighting
-RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+RUN curl -fLo /home/pwn/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 USER root
 RUN echo "1234\n1234\n" | passwd root
 RUN echo "1234\n1234\n" | passwd pwn
-ADD README /home/pwn/README
+COPY README /home/pwn/README
 RUN chmod 666 /home/pwn/README
-ADD start.sh /start.sh
+COPY start.sh /start.sh
 RUN chmod 750 /start.sh
