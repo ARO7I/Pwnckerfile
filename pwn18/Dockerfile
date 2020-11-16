@@ -6,7 +6,6 @@ ENV LC_ALL=C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-#RUN sed -i "s/http:\/\/archive.ubuntu.com/http:\/\/mirror.kakao.com/g" /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install curl git wget file zsh sudo vim libssl-dev libffi-dev build-essential netcat-traditional -y
 RUN apt-get install gdb python3 python3-pip python3-dev ruby -y
@@ -20,7 +19,7 @@ RUN apt-get update
 RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
 
 RUN apt-get install openssh-server -y
-RUN sed -ri "s/Port 22/Port 4418/g" /etc/ssh/sshd_config
+RUN sed -ri "s/#Port 22/Port 4418/g" /etc/ssh/sshd_config
 
 USER pwn
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
