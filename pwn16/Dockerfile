@@ -6,17 +6,15 @@ ENV LC_ALL=C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
+RUN dpkg --add-architecture i386
 RUN apt-get update
 RUN apt-get install curl git wget file zsh sudo vim libssl-dev libffi-dev build-essential netcat-traditional -y
 RUN apt-get install gdb python3 python3-pip python3-dev ruby -y
+RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
 RUN gem install one_gadget
 
 RUN useradd -ms /bin/zsh pwn
 WORKDIR /home/pwn
-
-RUN dpkg --add-architecture i386
-RUN apt-get update
-RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
 
 RUN apt-get install openssh-server -y
 RUN sed -ri "s/Port 22/Port 4416/g" /etc/ssh/sshd_config
