@@ -28,8 +28,6 @@ let g:airline_theme = "murmur"
 
 map <Leader>t <ESC>:NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen = 1
-let NERDTreeShowHidden = 1
-let NERDTreeShowLineNumbers = 1
 autocmd BufEnter * lcd %:p:h
 autocmd VimEnter * if !argc() | NERDTree | endif
 
