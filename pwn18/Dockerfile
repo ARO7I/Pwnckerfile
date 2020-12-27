@@ -8,8 +8,8 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 
 RUN dpkg --add-architecture i386
 RUN apt-get update
-RUN apt-get install curl git wget file zsh sudo vim libssl-dev libffi-dev build-essential netcat-traditional binutils-multiarch -y
-RUN apt-get install gdb python3 python3-pip python3-dev ruby -y
+RUN apt-get install curl git wget file zsh sudo vim libssl-dev libffi-dev build-essential netcat-traditional -y
+RUN apt-get install gdb python3 python3-pip python3-dev ruby binutils-multiarch -y
 RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
 RUN gem install one_gadget
 
