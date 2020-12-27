@@ -5,6 +5,7 @@ ENV TZ Asia/Seoul
 ENV LC_ALL=C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+RUN sed -i "s/archive.ubuntu.com/mirror.kakao.com/g" /etc/apt/sources.list
 
 RUN dpkg --add-architecture i386
 RUN apt-get update
