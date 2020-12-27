@@ -35,7 +35,7 @@ RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade pwntools
 RUN git clone https://github.com/longld/peda.git /home/pwn18/.peda
 RUN sed -ri 's/n", "a/ff", "a/g' /home/pwn18/.peda/lib/config.py
-RUN git clone https://github.com/scwuaptx/pwngdb.git /home/pwn18/.pwngdb
+RUN git clone https://github.com/scwuaptx/Pwngdb.git /home/pwn18/.Pwngdb
 RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o /home/pwn18/.gdbinit
 
 RUN python3 -m pip install --upgrade capstone
