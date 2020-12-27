@@ -3,6 +3,6 @@ Sudo setting
 2. sudoedit /etc/sudoers
 3. :20
 4. yyp
-5. xxxxipwn
-6. \e
+5. root -> pwn16
+6. esc
 7. :wq
