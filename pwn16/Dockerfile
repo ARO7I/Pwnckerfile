@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER ARO7I <ARO7I@icloud.com>
 
 ENV TZ Asia/Seoul
-ENV LC_ALL=C.UTF-8
+ENV LC_ALL C.UTF-8
 ENV PYTHONIOENCODING UTF-8
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 RUN sed -i "s/archive.ubuntu.com/mirror.kakao.com/g" /etc/apt/sources.list
@@ -44,9 +44,8 @@ RUN curl -fLo /home/pwn16/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 USER root
+RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN echo "1234\n1234\n" | passwd root
 RUN echo "1234\n1234\n" | passwd pwn16
-COPY README /home/pwn16/README
-RUN chmod 666 /home/pwn16/README
 COPY start.sh /start.sh
 RUN chmod 750 /start.sh
