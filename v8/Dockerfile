@@ -13,7 +13,7 @@ COPY zshrc /home/pwn20/.zshrc
 RUN chmod 666 /home/pwn20/.zshrc
 COPY install.sh /home/pwn20/install.sh
 RUN chmod +x /home/pwn20/install.sh
-COPY install.sh /home/pwn20/buildRelease.sh
+COPY buildRelease.sh /home/pwn20/buildRelease.sh
 RUN chmod +x /home/pwn20/buildRelease.sh
-COPY install.sh /home/pwn20/buildDebug.sh
+COPY buildDebug.sh /home/pwn20/buildDebug.sh
 RUN chmod +x /home/pwn20/buildDebug.sh
