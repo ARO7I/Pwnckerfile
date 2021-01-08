@@ -12,4 +12,4 @@ USER pwn20
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/pwn20/.depot_tools
 
 USER root
-RUN ln -s /usr/bin/python2 /usr/bin/python
+RUN ln -sf /usr/bin/python2 /usr/bin/python

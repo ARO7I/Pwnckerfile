@@ -44,7 +44,7 @@ RUN curl -fLo /home/pwn18/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 USER root
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 RUN echo "1234\n1234\n" | passwd root
 RUN echo "1234\n1234\n" | passwd pwn18
 COPY start.sh /start.sh
