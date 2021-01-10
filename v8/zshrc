@@ -1,7 +1,7 @@
 export EDITOR="vim"
 export LANG="C.UTF-8"
 export TERM="xterm-256color"
-export PATH="/home/pwn20/.depot_tools:$PATH"
+export PATH="$HOME/.depot_tools:$PATH"
 
 ZSH_THEME="mh"
 ZSH_DISABLE_COMPFIX="true"
