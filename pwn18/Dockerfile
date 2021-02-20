@@ -27,7 +27,7 @@ RUN adduser ${ID} sudo
 WORKDIR ${HOME}
 
 RUN apt-get install openssh-server -y
-RUN sed -ri "s/Port 22/Port ${PORT}/g" /etc/ssh/sshd_config
+RUN sed -ri "s/#Port 22/Port ${PORT}/g" /etc/ssh/sshd_config
 
 USER ${ID}
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
