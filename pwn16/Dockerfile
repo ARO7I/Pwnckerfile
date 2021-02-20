@@ -1,9 +1,15 @@
 FROM ubuntu:16.04
 MAINTAINER ARO7I <ARO7I@icloud.com>
 
+ARG ID=pwn16
+ARG PW=1234
+ARG HOME=/home/${ID}/
+ARG PORT=4416
+
 ENV TZ Asia/Seoul
 ENV LC_ALL C.UTF-8
 ENV PYTHONIOENCODING UTF-8
+
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 RUN sed -i "s/archive.ubuntu.com/mirror.kakao.com/g" /etc/apt/sources.list
 
@@ -12,40 +18,44 @@ RUN apt-get update
 RUN apt-get install curl git wget file zsh sudo vim libssl-dev libffi-dev build-essential netcat-traditional -y
 RUN apt-get install gdb python3 python3-pip python3-dev ruby binutils-multiarch -y
 RUN apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 -y
-RUN gem install one_gadget
+RUN apt-get upgrade -y
+RUN apt-get autoremove -y
+RUN gem install one_gadget -v 1.7.3
 
-RUN useradd -ms /bin/zsh pwn16
-WORKDIR /home/pwn16
+RUN useradd -ms /bin/zsh ${ID}
+RUN adduser ${ID} sudo
+WORKDIR ${HOME}
 
 RUN apt-get install openssh-server -y
-RUN sed -ri "s/Port 22/Port 4416/g" /etc/ssh/sshd_config
+RUN sed -ri "s/Port 22/Port ${PORT}/g" /etc/ssh/sshd_config
 
-USER pwn16
+USER ${ID}
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN git clone https://github.com/djui/alias-tips.git /home/pwn16/.oh-my-zsh/custom/plugins/alias-tips
+RUN git clone https://github.com/djui/alias-tips.git ${HOME}/.oh-my-zsh/custom/plugins/alias-tips
 
 USER root
-COPY zshrc /home/pwn16/.zshrc
-RUN chmod 666 /home/pwn16/.zshrc
-COPY vimrc /home/pwn16/.vimrc
-RUN chmod 666 /home/pwn16/.vimrc
+COPY zshrc ${HOME}/.zshrc
+RUN chmod 666 ${HOME}/.zshrc
+COPY vimrc ${HOME}/.vimrc
+RUN chmod 666 ${HOME}/.vimrc
+COPY update.sh ${HOME}/.update.sh
+RUN chmod +x ${HOME}/.update.sh
 
-USER pwn16
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install --upgrade pwntools
-RUN git clone https://github.com/longld/peda.git /home/pwn16/.peda
-RUN sed -ri 's/n", "a/ff", "a/g' /home/pwn16/.peda/lib/config.py
-RUN git clone https://github.com/scwuaptx/Pwngdb.git /home/pwn16/.Pwngdb
-RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o /home/pwn16/.gdbinit
+USER ${ID}
+RUN pip3 install -U pip==20.3.4
+RUN pip3 install -U pwntools
+RUN git clone https://github.com/longld/peda.git ${HOME}/.peda
+RUN sed -ri 's/n", "a/ff", "a/g' ${HOME}/.peda/lib/config.py
+RUN git clone https://github.com/scwuaptx/Pwngdb.git ${HOME}/.Pwngdb
+RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o ${HOME}/.gdbinit
 
 RUN python3 -m pip install --upgrade capstone
-RUN git clone https://github.com/JonathanSalwan/ROPgadget.git /home/pwn16/.ROPgadget
-RUN curl -fLo /home/pwn16/.vim/autoload/plug.vim --create-dirs \
+RUN git clone https://github.com/JonathanSalwan/ROPgadget.git ${HOME}/.ROPgadget
+RUN curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 USER root
-RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN echo "1234\n1234\n" | passwd root
-RUN echo "1234\n1234\n" | passwd pwn16
+RUN echo "${PW}\n${PW}\n" | passwd root
+RUN echo "${PW}\n${PW}\n" | passwd ${ID}
 COPY start.sh /start.sh
 RUN chmod 750 /start.sh
