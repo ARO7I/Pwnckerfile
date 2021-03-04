@@ -38,6 +38,8 @@ COPY zshrc ${HOME}/.zshrc
 RUN chmod 666 ${HOME}/.zshrc
 COPY vimrc ${HOME}/.vimrc
 RUN chmod 666 ${HOME}/.vimrc
+COPY gdbinit ${HOME}/.gdbinit
+RUN chmod 666 ${HOME}/.gdbinit
 COPY update.sh ${HOME}/.update.sh
 RUN chmod +x ${HOME}/.update.sh
 
@@ -47,7 +49,6 @@ RUN pip3 install -U pwntools
 RUN git clone https://github.com/longld/peda.git ${HOME}/.peda
 RUN sed -ri 's/n", "a/ff", "a/g' ${HOME}/.peda/lib/config.py
 RUN git clone https://github.com/scwuaptx/Pwngdb.git ${HOME}/.Pwngdb
-RUN curl https://gist.githubusercontent.com/ARO7I/6846e36e56258a44b25c64b1036549ac/raw/bcd734006fd4b80e467d112a11482a7bb858bb1e/.gdbinit -o ${HOME}/.gdbinit
 
 RUN python3 -m pip install --upgrade capstone
 RUN git clone https://github.com/JonathanSalwan/ROPgadget.git ${HOME}/.ROPgadget
